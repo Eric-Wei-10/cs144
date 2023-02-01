@@ -12,10 +12,16 @@ void DUMMY_CODE(Targs &&... /* unused */) {}
 
 using namespace std;
 
-ByteStream::ByteStream(const size_t capacity):
-    buffer(capacity), start(0), end(0), occupied(0),
-    _capacity(capacity), _bytes_read(0), _bytes_written(0),
-    _end_input(false), _error(false) {}
+ByteStream::ByteStream(const size_t capacity)
+    : buffer(capacity)
+    , start(0)
+    , end(0)
+    , occupied(0)
+    , _capacity(capacity)
+    , _bytes_read(0)
+    , _bytes_written(0)
+    , _end_input(false)
+    , _error(false) {}
 
 size_t ByteStream::write(const string &data) {
     size_t written_cnt = 0;
@@ -42,7 +48,7 @@ string ByteStream::peek_output(const size_t len) const {
 }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
-void ByteStream::pop_output(const size_t len) { 
+void ByteStream::pop_output(const size_t len) {
     size_t cnt = 0;
     while (cnt < len && occupied > 0) {
         start++;
@@ -61,9 +67,7 @@ std::string ByteStream::read(const size_t len) {
     return res;
 }
 
-void ByteStream::end_input() {
-    _end_input = true;
-}
+void ByteStream::end_input() { _end_input = true; }
 
 bool ByteStream::input_ended() const { return _end_input; }
 
@@ -77,6 +81,4 @@ size_t ByteStream::bytes_written() const { return _bytes_written; }
 
 size_t ByteStream::bytes_read() const { return _bytes_read; }
 
-size_t ByteStream::remaining_capacity() const { 
-    return _capacity - occupied; 
-}
+size_t ByteStream::remaining_capacity() const { return _capacity - occupied; }

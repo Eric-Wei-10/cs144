@@ -1,13 +1,13 @@
 Lab 0 Writeup
 =============
 
-My name: [your name here]
+My name: Xin Wei
 
-My SUNet ID: [your sunetid here]
+My SUNet ID: eric
 
 I collaborated with: [list sunetids here]
 
-This lab took me about [n] hours to do. I [did/did not] attend the lab session.
+This lab took me about [2] hours to do. I [did/did not] attend the lab session.
 
 My secret code from section 2.1 was: [code here]
 
