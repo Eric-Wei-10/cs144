@@ -18,6 +18,8 @@ class StreamReassembler {
     size_t _capacity;    //!< The maximum number of bytes
     map<size_t, string> _idx_str;
     size_t _next;
+    bool _eof;
+    size_t _last_byte;
 
     size_t total_size();
 

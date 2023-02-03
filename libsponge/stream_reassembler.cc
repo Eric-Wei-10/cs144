@@ -13,7 +13,8 @@ void DUMMY_CODE(Targs &&... /* unused */) {}
 using namespace std;
 
 StreamReassembler::StreamReassembler(const size_t capacity) :
-    _output(capacity), _capacity(capacity), _idx_str(), _next(0) {}
+    _output(capacity), _capacity(capacity), _idx_str(), _next(0), 
+    _eof(false), _last_byte(0xffffffff) {}
 
 size_t StreamReassembler::total_size() {
     return unassembled_bytes() + _output.buffer_size();
@@ -25,13 +26,16 @@ size_t StreamReassembler::total_size() {
 void StreamReassembler::push_substring(const string &data, const size_t index, const bool eof) {
     // string _data;
     // size_t eff_length = min(_capacity - total_size(), data.length());
-    if (data.length() == 0) return;
+    if (eof) {
+        _eof = eof;
+        _last_byte = index + data.length();
+    }
     
     map<size_t, string>::iterator it;
 
-    if (eof) {
-        _output.end_input();
-    }
+    // if (eof) {
+    //     _output.end_input();
+    // }
 
     // _data = data.substr(0, eff_length);
     // cout << "here" << endl;
@@ -60,6 +64,10 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
         }
     }
     _idx_str.erase(_idx_str.begin(), it);
+
+    if (_eof && _next == _last_byte) {
+        _output.end_input();
+    }
 }
 
 size_t StreamReassembler::unassembled_bytes() const {
