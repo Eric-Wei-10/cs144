@@ -24,6 +24,8 @@ size_t StreamReassembler::total_size() {
 //! possibly out-of-order, from the logical stream, and assembles any newly
 //! contiguous substrings and writes them into the output stream in order.
 void StreamReassembler::push_substring(const string &data, const size_t index, const bool eof) {
+    if (data.length() == 0 && !eof) return;
+
     if (eof) {
         _eof = eof;
         _last_byte = index + data.length();
@@ -82,5 +84,5 @@ size_t StreamReassembler::unassembled_bytes() const {
 }
 
 bool StreamReassembler::empty() const { 
-    return _output.buffer_empty() && _idx_str.empty(); 
+    return _output.buffer_empty() && unassembled_bytes() == 0; 
 }
