@@ -15,7 +15,8 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
     string data = seg.payload().copy();
     size_t str_idx;
 
-    if (!header.syn && !syn_recv) return;
+    if (!header.syn && !syn_recv)
+        return;
 
     if (header.syn && !syn_recv) {
         syn_recv = true;
@@ -44,6 +45,4 @@ optional<WrappingInt32> TCPReceiver::ackno() const {
     }
 }
 
-size_t TCPReceiver::window_size() const {
-    return _capacity - _reassembler.stream_out().buffer_size();
-}
+size_t TCPReceiver::window_size() const { return _capacity - _reassembler.stream_out().buffer_size(); }

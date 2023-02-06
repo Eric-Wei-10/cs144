@@ -14,9 +14,7 @@ using namespace std;
 //! Transform an "absolute" 64-bit sequence number (zero-indexed) into a WrappingInt32
 //! \param n The input absolute 64-bit sequence number
 //! \param isn The initial sequence number
-WrappingInt32 wrap(uint64_t n, WrappingInt32 isn) {
-    return isn + n;
-}
+WrappingInt32 wrap(uint64_t n, WrappingInt32 isn) { return isn + n; }
 
 //! Transform a WrappingInt32 into an "absolute" 64-bit sequence number (zero-indexed)
 //! \param n The relative sequence number
@@ -34,7 +32,7 @@ uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint) {
     uint64_t first32 = checkpoint & 0xffffffff00000000;
     uint64_t last32;
     uint64_t res;
-    uint64_t aux = 0x0000000100000000; // 1 << 32
+    uint64_t aux = 0x0000000100000000;  // 1 << 32
     if (int64_t(_n) - int64_t(_isn) >= 0) {
         last32 = uint64_t(_n - _isn);
     } else {
@@ -47,9 +45,9 @@ uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint) {
         if (res == checkpoint) {
             return res;
         } else if (res < checkpoint) {
-            return ((res + aux) - checkpoint) > (checkpoint - res)? res: (res + aux);
+            return ((res + aux) - checkpoint) > (checkpoint - res) ? res : (res + aux);
         } else {
-            return (res - checkpoint) > (checkpoint - (res - aux))? (res - aux): res;
+            return (res - checkpoint) > (checkpoint - (res - aux)) ? (res - aux) : res;
         }
     }
 }

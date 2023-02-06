@@ -12,25 +12,23 @@ void DUMMY_CODE(Targs &&... /* unused */) {}
 
 using namespace std;
 
-StreamReassembler::StreamReassembler(const size_t capacity) :
-    _output(capacity), _capacity(capacity), _idx_str(), _next(0), 
-    _eof(false), _last_byte(0xffffffff) {}
+StreamReassembler::StreamReassembler(const size_t capacity)
+    : _output(capacity), _capacity(capacity), _idx_str(), _next(0), _eof(false), _last_byte(0xffffffff) {}
 
-size_t StreamReassembler::total_size() {
-    return unassembled_bytes() + _output.buffer_size();
-}
+size_t StreamReassembler::total_size() { return unassembled_bytes() + _output.buffer_size(); }
 
 //! \details This function accepts a substring (aka a segment) of bytes,
 //! possibly out-of-order, from the logical stream, and assembles any newly
 //! contiguous substrings and writes them into the output stream in order.
 void StreamReassembler::push_substring(const string &data, const size_t index, const bool eof) {
-    if (data.length() == 0 && !eof) return;
+    if (data.length() == 0 && !eof)
+        return;
 
     if (eof) {
         _eof = eof;
         _last_byte = index + data.length();
     }
-    
+
     map<size_t, string>::iterator it;
 
     it = _idx_str.find(index);
@@ -67,7 +65,7 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
 size_t StreamReassembler::unassembled_bytes() const {
     size_t next = _next;
     size_t unassembled = 0;
-    for (auto it: _idx_str) {
+    for (auto it : _idx_str) {
         if (it.first < next) {
             if (it.first + it.second.length() <= next) {
                 continue;
@@ -80,9 +78,7 @@ size_t StreamReassembler::unassembled_bytes() const {
             next = it.first + it.second.length();
         }
     }
-    return unassembled; 
+    return unassembled;
 }
 
-bool StreamReassembler::empty() const { 
-    return _output.buffer_empty() && unassembled_bytes() == 0; 
-}
+bool StreamReassembler::empty() const { return _output.buffer_empty() && unassembled_bytes() == 0; }
