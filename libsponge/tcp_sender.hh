@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <queue>
+#include <cmath>
 
 //! \brief The "sender" part of a TCP implementation.
 
@@ -31,6 +32,12 @@ class TCPSender {
 
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
+
+    //! boundary of acknowledged part and outgoing part
+    uint64_t _outgoing{0};
+
+    //! the maximum index that could be sent
+    uint64_t _outgoing_max{1 + TCPConfig::MAX_PAYLOAD_SIZE};
 
   public:
     //! Initialize a TCPSender
